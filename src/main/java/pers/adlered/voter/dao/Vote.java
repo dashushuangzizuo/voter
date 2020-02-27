@@ -1,12 +1,16 @@
 package pers.adlered.voter.dao;
 
+import java.util.Date;
+
 public class Vote {
     private Integer VID;
     private String Title;
-    private String Describe;
+    private String Describes;
     private String Selection;
     private Integer Type;
-    private Integer Limit;
+    private Integer Limits;
+    private String Pass;
+    private Date VoteDate;
 
     public Integer getVID() {
         return VID;
@@ -22,14 +26,6 @@ public class Vote {
 
     public void setTitle(String title) {
         Title = title;
-    }
-
-    public String getDescribe() {
-        return Describe;
-    }
-
-    public void setDescribe(String describe) {
-        Describe = describe;
     }
 
     public String getSelection() {
@@ -48,11 +44,35 @@ public class Vote {
         Type = type;
     }
 
-    public Integer getLimit() {
-        return Limit;
+    public String getPass() {
+        return Pass;
     }
 
-    public void setLimit(Integer limit) {
-        Limit = limit;
+    public void setPass(String pass) {
+        Pass = pass;
+    }
+
+    public String getDescribes() {
+        return Describes;
+    }
+
+    public void setDescribes(String describes) {
+        Describes = describes;
+    }
+
+    public Integer getLimits() {
+        return Limits;
+    }
+
+    public void setLimits(Integer limits) {
+        Limits = limits;
+    }
+
+    public Date getVoteDate() {
+        return VoteDate;
+    }
+
+    public void setVoteDate(Date voteDate) {
+        VoteDate = voteDate;
     }
 }

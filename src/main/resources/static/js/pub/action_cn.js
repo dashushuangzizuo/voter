@@ -16,6 +16,8 @@ function submitVote() {
             params.selection = build;
             params.type = mode;
             params.limit = $("#modeInput").val();
+            params.pass = $("#pass").val();
+            params.voternum = $("#voternum").val();
             if (mode == 1) {
                 params.limit = -1;
             }
@@ -27,7 +29,7 @@ function submitVote() {
                         if (data == -7426) {
                             $(".isError").html("<font color='red'>非法输入 :( </font>请检查。");
                         } else {
-                            location.href = "/vote/cn/" + data;
+                            location.href = "/vote/cn/" + data+"/"+params.pass;
                         }
                     }, 1000);
                 }
@@ -72,7 +74,22 @@ function addOption() {
         "        </div>\n" +
         "        <br>\n" +
         "    </div>";
-    $(".add").append(append);
+    $(".add").before(append);
+    // append="" +"<li><a href=\"#detail" + options + "\" tt=\"\" data-toggle=\"tab\">选项 " + options +"</a></li>";
+    // $(".nav_add").before(append);
+    // append="" +"       <div class=\"tab-pane\" id=\"detail" + options + "\">" +
+    //            "             <form role=\"form\">" +
+    //             "                   <div class=\"form-group\">" +
+    //
+    //             "                          <label for=\"text" + options +"\">简介" + options + "</label>" +
+    //              "                         <textarea class=\"form-control\" rows=\"30\" id=\"text" + options + "\"></textarea>" +
+    //
+    //              "                 </div>" +
+    //
+    //               "            </form>" +
+    //                "        </div>";
+    //  $(".tab_add").before(append);
+
 }
 
 function delOption() {
@@ -84,8 +101,14 @@ function delOption() {
         "                    <i class=\"fa fa-close\"></i>\n" +
         "                </button>\n" +
         "            </span>");
+    //
+    //   $("#detail" + options ).remove();
+    //    $("#tabOption li")[options].remove();
 }
 
+function showTabView(){
+ $(".option")
+}
 //Maximum limit check
 $("#modeInput").on("input propertychange", function () {
     var input = Number($("#modeInput").val());
@@ -127,6 +150,8 @@ function checkAll() {
     params.describe = $("#voteDescribe").val();
     params.type = mode;
     params.limit = $("#modeInput").val();
+    params.voternum = $("#voternum").val();
+    params.pass = $("#pass").val();
     //Verify
     if (params.title == "") {
         allDone = false;
@@ -135,6 +160,16 @@ function checkAll() {
     if (params.describe == "") {
         allDone = false;
         $("#borderDescribe").addClass("has-error");
+    }
+
+    if (params.voternum == "") {
+        allDone = false;
+        $("#borderVoternum").addClass("has-error");
+    }
+
+    if (params.pass == "") {
+        allDone = false;
+        $("#borderPass").addClass("has-error");
     }
     //Limit
     if ($("#modeInput").val() != "") {
@@ -161,5 +196,7 @@ function clearAllError() {
     $("#borderTitle").removeClass("has-error");
     $("#borderDescribe").removeClass("has-error");
     $("#status").removeClass("has-error");
+    $("#borderVoternum").removeClass("has-error");
+    $("#borderPass").removeClass("has-error");
     $(".isError").html("");
 }

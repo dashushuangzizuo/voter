@@ -11,29 +11,35 @@ function eventOnSelect(limit) {
     });
 }
 
+function  submit(choice, VID) {
+    checkToken(choice, VID);
+}
+
 function submitVote(choice, VID) {
-    if (choice == 1) {
-        wait();
-        var result = $("input[name='optionsRadios']:checked").attr("id");
-        if (result != undefined) {
-            vote(VID, result);
-        } else {
-            emptySet();
+        if (choice == 1) {
+            wait();
+            var result = $("input[name='optionsRadios']:checked").attr("id");
+            if (result != undefined) {
+                vote(VID, result);
+            } else {
+                emptySet();
+            }
+        } else if (choice == 0) {
+            wait();
+            var obj = document.getElementsByName("optionsCheckbox");
+            var checkBoxes = [];
+            for (var i in obj) {
+                if (obj[i].checked)
+                    checkBoxes.push(obj[i].getAttribute("id"));
+            }
+            if (checkBoxes.length != 0) {
+                vote(VID, checkBoxes.toString());
+            } else {
+                emptySet();
+            }
         }
-    } else if (choice == 0) {
-        wait();
-        var obj = document.getElementsByName("optionsCheckbox");
-        var checkBoxes = [];
-        for (var i in obj) {
-            if (obj[i].checked)
-                checkBoxes.push(obj[i].getAttribute("id"));
-        }
-        if (checkBoxes.length != 0) {
-            vote(VID, checkBoxes.toString());
-        } else {
-            emptySet();
-        }
-    }
+    // }
+
 }
 
 function wait() {
@@ -73,28 +79,58 @@ function invalidRule() {
     $("#submitButton").html("<i class=\"fa fa-rotate-right\"></i> 重试");
 }
 
+function commitToken(VID) {
+    $("#voteID").val(VID);
+    $("#submitToken").click();
+}
+
+function checkToken(choice, VID) {
+    // setTimeout(function () {
+        var token = sessionStorage.getItem("token");
+        var params = {};
+        params.voteID = VID;
+        params.token = token;
+        $.ajax({
+            url: "/checkVoteID",
+            data: params,
+            success: function (data) {
+                if (data == 1) {
+                    submitVote(choice, VID);
+                } else{
+                    commitToken(VID);
+                }
+            }
+        });
+    // }, 1000);
+}
+
 function vote(VID, selected) {
     setTimeout(function () {
+        var token = sessionStorage.getItem("token");
         var params = {};
         params.VID = VID;
         params.selected = selected;
+        params.token = token;
         $.ajax({
             url: "/submitVote",
             data: params,
             success: function (data) {
-                if (data == 1) {
-                    successful();
-                    var list = selected.split(",");
-                    list.forEach(function (value) {
-                        var count = $("#progress" + value + " .count").text();
-                        var afterCount = Number(count) + 1;
-                        $("#progress" + value + " .count").text(afterCount);
-                        var width = $("#progress" + value).width();
-                        var afterWidth = Number(width) + 25;
-                        $("#progress" + value).width(afterWidth);
-                        $("#progress" + value).removeClass("progress-bar-success");
-                        $("#progress" + value).addClass("progress-bar-info");
-                    });
+                if (data.indexOf(",") != -1 ) {
+                    sessionStorage.clear();
+                    sessionStorage.setItem("code",data.split(",")[1]);
+                    // successful();
+                    // var list = selected.split(",");
+                    // list.forEach(function (value) {
+                    //     var count = $("#progress" + value + " .count").text();
+                    //     var afterCount = Number(count) + 1;
+                    //     $("#progress" + value + " .count").text(afterCount);
+                    //     var width = $("#progress" + value).width();
+                    //     var afterWidth = Number(width) + 25;
+                    //     $("#progress" + value).width(afterWidth);
+                    //     $("#progress" + value).removeClass("progress-bar-success");
+                    //     $("#progress" + value).addClass("progress-bar-info");
+                    // });
+                    location.href = "/vote/end";
                 } else if (data == 0) {
                     only1Time();
                 }

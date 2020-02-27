@@ -5,7 +5,7 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1" name="viewport">
 
-    <title>发起投票 - Voter</title>
+    <title>发起投票</title>
 
     <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -28,12 +28,12 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand logo" data-target="#mainPage" data-toggle="modal" style="cursor:pointer;">Voter</a>
+            <a class="navbar-brand logo" data-target="#mainPage" data-toggle="modal" style="cursor:pointer;">主页</a>
         </div>
         <div class="collapse navbar-collapse" id="navbar">
             <ul class="nav navbar-nav">
                 <li class="active"><a href="#">发起投票</a></li>
-                <li><a data-target="#toVoteID" data-toggle="modal" href="javascript: void(0);">前往 VoteID ..</a></li>
+                <li><a data-target="#toVoteID" data-toggle="modal" href="javascript: void(0);">前往投票</a></li>
             </ul>
         </div>
     </div>
@@ -41,7 +41,7 @@
 
 <div class="container" role="main">
     <h1 class="mt-5">发起投票</h1>
-    <p class="lead">填写下方选项来发起一次投票, 无需登录。</p>
+    <p class="lead"> </p>
     <p class="text-info"><b>如果你提交了下方的内容，你<font color="red">不能再对该投票进行编辑/删除</font>。</b>
     </p>
     <!-- Options -->
@@ -103,10 +103,72 @@
     </div>
     <!-- More selection -->
     <div class="add"></div>
+
+
     <!-- Add button -->
     <button class="btn btn-default pull-right" onclick="addOption()" type="button">
         <i class="fa fa-plus"></i>
     </button>
+
+<!--    &lt;!&ndash; Add tabView &ndash;&gt;-->
+<!--    <ul class="nav nav-tabs" id="tabOption">-->
+<!--        <li><a href="#detail1" tt="" data-toggle="tab">选项 1</a></li>-->
+<!--        <li><a href="#detail2" tt="" data-toggle="tab">选项 2</a></li>-->
+<!--        <li><a href="#detail3" tt="" data-toggle="tab">选项 3</a></li>-->
+<!--        <div class="nav_add"></div>-->
+<!--    </ul>-->
+
+<!--    <div id="myTabContent" class="tab-content">-->
+<!--        <div class="tab-pane active" id="detail1">-->
+<!--            <form role="form">-->
+<!--                <div class="form-group">-->
+<!--                    <label for="text1">简介1</label>-->
+<!--                    <textarea class="form-control" rows="30" id="text1"></textarea>-->
+<!--                </div>-->
+
+<!--            </form>-->
+<!--        </div>-->
+<!--        <div class="tab-pane" id="detail2">-->
+<!--            <form role="form">-->
+<!--                <div class="form-group">-->
+
+<!--                        <label for="text2">简介2</label>-->
+<!--                        <textarea class="form-control" rows="30" id="text2"></textarea>-->
+
+<!--                </div>-->
+
+<!--            </form>-->
+<!--        </div>-->
+
+<!--        <div class="tab-pane" id="detail3">-->
+<!--            <form role="form">-->
+<!--                <div class="form-group">-->
+
+<!--                        <label for="text3">简介3</label>-->
+<!--                        <textarea class="form-control" rows="30" id="text3"></textarea>-->
+
+<!--                </div>-->
+
+<!--            </form>-->
+<!--        </div>-->
+<!--        <div class="tab_add"></div>-->
+<!--    </div>-->
+    <br>
+    <br>
+    <br>
+    <div class="voternum" id="borderVoternum">
+        <div class="input-group">
+            <span class="input-group-addon">投票人数</span>
+            <input class="form-control" id="voternum" type="text">
+        </div>
+    </div>
+    <br>
+    <div class="pass" id="borderPass">
+        <div class="input-group">
+            <span class="input-group-addon">管理员密码</span>
+            <input class="form-control" id="pass" type="text">
+        </div>
+    </div>
     <!-- Submit button -->
     <p>
     <div class="isError"></div>
@@ -124,7 +186,7 @@
 <footer class="footer">
     <div class="container">
         <br>
-        <span class="text-muted" th:text="'© ️' + ${YEAR}"></span><span>&nbsp;<a href=https://github.com/AdlerED/Voter>Voter</a>
+        <span class="text-muted" th:text="'© ️' + ${YEAR}"></span><span>&nbsp;<a>投票</a>
         <img height="32" src="/static/images/china.png" width="32"/></span>
     </div>
 </footer>
@@ -153,12 +215,14 @@
             }
         });
     });
+
+
+
 </script>
 <script src="/static/js/pub/action_cn.js"></script>
 
 <span th:replace="/vote/modal/toIndex_cn"></span>
 <span th:replace="/vote/modal/toVoteID_cn"></span>
-
-<script src="/static/js/vote/toVoteID.js"></script>
+<script src="/static/js/vote/toVoteID_cn.js"></script>
 </body>
 </html>

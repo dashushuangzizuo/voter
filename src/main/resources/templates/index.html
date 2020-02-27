@@ -5,7 +5,7 @@
     <meta content="IE=edge" http-equiv="X-UA-Compatible">
     <meta content="width=device-width, initial-scale=1" name="viewport">
 
-    <title>Welcome - Voter</title>
+    <title>欢迎</title>
 
     <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -27,35 +27,31 @@
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand logo" style="cursor: pointer;">Voter</a>
+            <a class="navbar-brand logo" style="cursor: pointer;">首页</a>
         </div>
-        <div class="collapse navbar-collapse" id="navbar">
-            <ul class="nav navbar-nav">
-                <li><a data-target="#toVoteID" data-toggle="modal" href="javascript: void(0);">VoteID ..</a></li>
-            </ul>
-        </div>
+<!--        <div class="collapse navbar-collapse" id="navbar">-->
+<!--            <ul class="nav navbar-nav">-->
+<!--                <li><a data-target="#toVoteID" data-toggle="modal" href="javascript: void(0);">搜索 ..</a></li>-->
+<!--            </ul>-->
+<!--        </div>-->
     </div>
 </nav>
 
 <div class="container">
-    <h1 class="mt-5">Voter - Anonymous Vote System | 匿名投票系统</h1>
-    <button class="btn btn-default" data-target="#toVoteID" data-toggle="modal" type="button">To VoteID | 跳转至 VoteID
+    <h1 class="mt-5">匿名投票系统</h1>
+    <button class="btn btn-default" data-target="#toVoteID" data-toggle="modal" type="button">搜索发起的投票
         ..
     </button>
     <p class="lead">
-        <br>
-        <b>Voter</b> is an anonymous vote website, and the voters were also anonymous. To ensure security, you can issue
-        votes, but you can't modify or delete any votes.
         <br><br>
-        <b>Voter</b> 是一个匿名投票站点，投票发起者同样是匿名的。所以为了确保安全，你可以发起投票，但不能修改或删除任何投票。
+        <b>该网站</b> 是一个匿名投票站点，投票发起者同样是匿名的。所以为了确保安全，你可以发起投票，但不能修改或删除任何投票。
     </p>
     <br>
-    <button class="btn btn-info btn-lg" onclick="location.href = '/public/en'" type="button">Launch a vote (
-        In
-        language: English )
-    </button>
-    <button class="btn btn-danger btn-lg" onclick="location.href = '/public/cn'" type="button">发起一次投票（
-        使用语言：简体中文 ）
+<!--    <button class="btn btn-info btn-lg" onclick="location.href = '/public/en'" type="button">Launch a vote (-->
+<!--        In-->
+<!--        language: English )-->
+<!--    </button>-->
+    <button class="btn btn-danger btn-lg" onclick="location.href = '/public/cn'" type="button">发起一次投票
     </button>
 </div>
 
@@ -64,7 +60,7 @@
 <footer class="footer">
     <div class="container">
         <br>
-        <span class="text-muted" th:text="'© ️' + ${YEAR}"></span><span>&nbsp;<a href=https://github.com/AdlerED/Voter>Voter</a>
+        <span class="text-muted" th:text="'© ️' + ${YEAR}"></span><span>&nbsp;<a>投票</a>
         <img height="32" src="/static/images/china.png" width="32"/></span>
     </div>
 </footer>
@@ -74,8 +70,8 @@
 <script src="/static/bootstrap/js/icheck.min.js"></script>
 
 <!-- Custom JS -->
-<span th:replace="/vote/modal/toVoteID_en"></span>
+<span th:replace="/vote/modal/toVoteID_cn"></span>
 
-<script src="/static/js/vote/toVoteID_en.js"></script>
+<script src="/static/js/vote/toVoteID_cn.js"></script>
 </body>
 </html>
