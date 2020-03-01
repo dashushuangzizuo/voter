@@ -86,7 +86,7 @@ function commitToken(VID) {
 
 function checkToken(choice, VID) {
     // setTimeout(function () {
-        var token = sessionStorage.getItem("token");
+    //     var token = sessionStorage.getItem("token");
         var params = {};
         params.voteID = VID;
         params.token = token;
@@ -106,7 +106,7 @@ function checkToken(choice, VID) {
 
 function vote(VID, selected) {
     setTimeout(function () {
-        var token = sessionStorage.getItem("token");
+        // var token = sessionStorage.getItem("token");
         var params = {};
         params.VID = VID;
         params.selected = selected;
@@ -116,8 +116,8 @@ function vote(VID, selected) {
             data: params,
             success: function (data) {
                 if (data.indexOf(",") != -1 ) {
-                    sessionStorage.clear();
-                    sessionStorage.setItem("code",data.split(",")[1]);
+                    // sessionStorage.clear();
+                    // sessionStorage.setItem("code",data.split(",")[1]);
                     // successful();
                     // var list = selected.split(",");
                     // list.forEach(function (value) {

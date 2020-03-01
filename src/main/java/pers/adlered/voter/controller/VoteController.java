@@ -61,6 +61,11 @@ public class VoteController {
 
     @RequestMapping("/vote/cn/{VID}/{TOKEN}")
     public ModelAndView showVoteCN(@PathVariable Integer VID,@PathVariable String TOKEN) {
+        // todo 身份验证
+        boolean flag = voteService.isVoter(VID,TOKEN);
+        if(!flag){
+            return new ModelAndView("/index");
+        }
         Vote vote = voteMapper.getVote(VID);
         ModelAndView modelAndView = new ModelAndView("/vote/index_cn");
         modelAndView.addObject("VoteID", vote.getVID());
@@ -75,8 +80,14 @@ public class VoteController {
         return modelAndView;
     }
 
-    @RequestMapping("/vote/adm/{VID}")
-    public ModelAndView showVoteAdm(@PathVariable Integer VID) {
+    @RequestMapping("/vote/adm/{VID}/{TOKEN}")
+    public ModelAndView showVoteAdm(@PathVariable Integer VID,@PathVariable String TOKEN) {
+        //todo 身份验证
+        boolean flag = voteService.isAdm(VID,TOKEN);
+        if(!flag){
+            return new ModelAndView("/index");
+        }
+
         int voteAll = 0;
         int voted = 0;
         int unVote = 0;

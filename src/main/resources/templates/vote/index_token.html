@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>令牌</title>
+
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom stylesheet -->
+    <link href="/static/fontawesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/pub/sticky_footer_navbar.css" rel="stylesheet">
+    <link href="/static/progress/css/component.css" rel="stylesheet" type="text/css">
+
+    <!-- Custom script -->
+    <script src="/static/progress/js/modernizr.custom.js"></script>
+
+</head>
+
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button aria-controls="navbar" aria-expanded="false" class="navbar-toggle collapsed" data-target="#navbar"
+                    data-toggle="collapse" type="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand logo" style="cursor: pointer;"></a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h1 class="mt-5">已为您生成令牌：</h1>
+
+    <div th:each="entries:${TokenList}">
+        <div class="row">
+            <div class="col-xs-4" id="divSelection1" th:text="${entries['']}" style="align-content: center;"></div>
+        </div>
+        <div>
+
+        </div>
+    </div>
+</div>
+
+<br>
+
+<footer class="footer">
+    <div class="container">
+        <br>
+        <span class="text-muted" th:text="'© ️' + ${YEAR}"></span><span>&nbsp;<a>投票</a>
+        <img height="32" src="/static/images/china.png" width="32"/></span>
+    </div>
+</footer>
+
+<script src="/static/jquery/jquery-3.4.1.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/bootstrap/js/icheck.min.js"></script>
+
+<!-- Custom JS -->
+<span th:replace="/vote/modal/toVoteID_cn"></span>
+
+<script src="/static/js/vote/toVoteID_cn.js"></script>
+<script>
+    // $(document).ready(function(){
+    //     $("#code").html(sessionStorage.getItem("code"));
+    //     sessionStorage.clear();
+    // });
+</script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!--<!DOCTYPE html>-->
+<!--<html xmlns:th="http://www.thymeleaf.org">-->
+<!--<head>-->
+<!--    <meta charset="UTF-8">-->
+<!--    <meta content="IE=edge" http-equiv="X-UA-Compatible">-->
+<!--    <meta content="width=device-width, initial-scale=1" name="viewport">-->
+
+<!--    <title th:text="${Title}"></title>-->
+
+<!--    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">-->
+
+<!--    &lt;!&ndash; Custom stylesheet &ndash;&gt;-->
+<!--    <link href="/static/css/vote/vote.css" rel="stylesheet">-->
+<!--    <link href="/static/fontawesome/css/font-awesome.min.css" rel="stylesheet">-->
+<!--    <link href="/static/css/pub/sticky_footer_navbar.css" rel="stylesheet">-->
+
+<!--    &lt;!&ndash; QR Code &ndash;&gt;-->
+<!--    &lt;!&ndash; JQuery &ndash;&gt;-->
+<!--    <script src="/static/jquery/jquery-3.4.1.min.js"></script>-->
+<!--    &lt;!&ndash; Generate Modal &ndash;&gt;-->
+<!--    <span th:replace="/vote/modal/QR_cn.html"></span>-->
+<!--    &lt;!&ndash; Import QR Generator &ndash;&gt;-->
+<!--    <script src="/static/js/vote/jquery.qrcode.min.js"></script>-->
+<!--    &lt;!&ndash; Generate QR &ndash;&gt;-->
+<!--    <script src="/static/js/generateQR.js"></script>-->
+<!--</head>-->
+
+<!--<body>-->
+<!--<nav class="navbar navbar-default navbar-fixed-top">-->
+<!--    <div class="container">-->
+<!--        <div class="navbar-header">-->
+<!--            <button aria-controls="navbar" aria-expanded="false" class="navbar-toggle collapsed" data-target="#navbar"-->
+<!--                    data-toggle="collapse" type="button">-->
+<!--                <span class="sr-only">Toggle navigation</span>-->
+<!--                <span class="icon-bar"></span>-->
+<!--                <span class="icon-bar"></span>-->
+<!--            </button>-->
+<!--            <a class="navbar-brand logo" data-target="#mainPage" data-toggle="modal">首页</a>-->
+<!--        </div>-->
+<!--        <div class="collapse navbar-collapse" id="navbar">-->
+<!--            <ul class="nav navbar-nav">-->
+<!--                <li class="active"><a href="javascript: void(0);" th:text="'为 ID： ' + ${VoteID} + ' 投票'"></a></li>-->
+<!--&lt;!&ndash;                <li><a data-target="#toVoteID" data-toggle="modal" href="javascript: void(0);">前往投票..</a></li>&ndash;&gt;-->
+<!--&lt;!&ndash;                <li hidden="hidden"><a  hidden= "hidden" data-target="#toVoteID" data-toggle="modal" href="javascript: void(0);"></a></li>&ndash;&gt;-->
+<!--                <button hidden="hidden" id="submitToken" data-target="#toVoteID" data-toggle="modal" ><i-->
+<!--                        ></i>-->
+<!--                </button>-->
+<!--            </ul>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</nav>-->
+
+<!--<div class="container" style="padding: 0 5px 0;">-->
+<!--    <div class="title">-->
+<!--&lt;!&ndash;        <a class="pull-left" href="javascript: void(0);" onclick="switchLang()">English</a>&ndash;&gt;-->
+<!--        <br>-->
+<!--        <h2 th:text="${Title}"></h2>-->
+<!--        <h4 th:text="${Describe}"></h4>-->
+<!--        <p class="text-danger" style="font-size: 16px;" th:if="${Type} == 0">请做 <b>多项选择</b> : )</p>-->
+<!--        <p class="text-danger" style="font-size: 16px;" th:if="${Type} == 1">请做 <b>单项选择</b> : )</p>-->
+<!--        <p th:if="${Limit} != -1">-->
+<!--            <i class="fa fa-info"></i>&nbsp;<span th:text="'最多选择选项：' + ${Limit}"></span>-->
+<!--        </p>-->
+<!--    </div>-->
+<!--</div>-->
+
+<!--<div class="text">-->
+<!--    <div class="container">-->
+<!--        <div th:each="entries:${Selection}">-->
+<!--            <div class="row">-->
+<!--                &lt;!&ndash; Progress &ndash;&gt;-->
+<!--                <div class="col-xs-5" id="divProgress">-->
+<!--                    <div class="progress progress-striped active">-->
+<!--                        <div aria-valuemax="100" aria-valuemin="0" aria-valuenow="60"-->
+<!--                             class="progress-bar progress-bar-success" role="progressbar"-->
+<!--                             th:id="'progress' + ${entries['num']}"-->
+<!--                             th:style="'width: ' + ${entries['percent']} + '%;'">-->
+<!--                            <div class="count" th:text="${entries['count']}"></div>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+
+<!--                &lt;!&ndash; Selection &ndash;&gt;-->
+<!--                <div class="col-xs-5" id="divSelection" th:text="${entries['selectionText']}"></div>-->
+
+<!--                &lt;!&ndash; Vote &ndash;&gt;-->
+<!--                <div class="col-xs-2" id="divVote">-->
+<!--                    <div class="vote">-->
+<!--                        <div class="checkbox" th:if="${Type} == 0">-->
+<!--                            <label>-->
+<!--                                <input class="selections" name="optionsCheckbox" th:id="${entries['num']}"-->
+<!--                                       type="checkbox">-->
+<!--                            </label>-->
+<!--                        </div>-->
+
+<!--                        <div class="radio" th:if="${Type} == 1">-->
+<!--                            <label>-->
+<!--                                <input class="selections" name="optionsRadios" th:id="${entries['num']}" type="radio">-->
+<!--                            </label>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--    <br>-->
+<!--    &lt;!&ndash; Submit button &ndash;&gt;-->
+<!--    <div aria-label="..." class="btn-group" role="group">-->
+<!--        <button class="btn btn-default" id="submitButton" th:onclick="|submit(${Type}, ${VoteID})|" type="button"><i-->
+<!--                class="fa fa-hand-stop-o"></i> 确定提交-->
+<!--        </button>-->
+<!--        <button class="btn btn-default" data-target="#shareQR" data-toggle="modal" type="button"><i-->
+<!--                class="fa fa-qrcode"></i> 分享二维码-->
+<!--        </button>-->
+<!--    </div>-->
+<!--    &lt;!&ndash; Alert window, controlled by JS &ndash;&gt;-->
+<!--    <br>-->
+<!--    <div class="alert"></div>-->
+<!--</div>-->
+
+<!--<footer class="footer">-->
+<!--    <div class="container">-->
+<!--        <br>-->
+<!--        <span class="text-muted" th:text="'© ️' + ${YEAR}"></span><span> <a>投票</a>-->
+<!--        <img height="32" src="/static/images/china.png" width="32"/></span>-->
+<!--    </div>-->
+<!--</footer>-->
+
+<!--<span th:replace="/vote/modal/toIndex_cn"></span>-->
+<!--<span th:replace="/vote/modal/toVoteID"></span>-->
+
+<!--<script src="/static/bootstrap/js/bootstrap.min.js"></script>-->
+<!--<script src="/static/bootstrap/js/icheck.min.js"></script>-->
+
+<!--&lt;!&ndash; Custom JS &ndash;&gt;-->
+<!--<script src="/static/js/vote/submit_cn.js"></script>-->
+<!--<script src="/static/js/vote/toVoteID.js"></script>-->
+<!--<script>-->
+<!--    eventOnSelect([[${Limit}]]);-->
+<!--</script>-->
+<!--<script src="/static/js/vote/switchLanguage.js"></script>-->
+<!--<script>-->
+<!--    function switchLang() {-->
+<!--        switchLanguage("en", [[${VoteID}]]);-->
+<!--    }-->
+<!--</script>-->
+<!--</body>-->
+<!--</html>-->

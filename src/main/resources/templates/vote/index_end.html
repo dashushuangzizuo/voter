@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="IE=edge" http-equiv="X-UA-Compatible">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
+
+    <title>感谢</title>
+
+    <link href="/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom stylesheet -->
+    <link href="/static/fontawesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="/static/css/pub/sticky_footer_navbar.css" rel="stylesheet">
+    <link href="/static/progress/css/component.css" rel="stylesheet" type="text/css">
+
+    <!-- Custom script -->
+    <script src="/static/progress/js/modernizr.custom.js"></script>
+
+</head>
+
+<body>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <button aria-controls="navbar" aria-expanded="false" class="navbar-toggle collapsed" data-target="#navbar"
+                    data-toggle="collapse" type="button">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand logo" style="cursor: pointer;"></a>
+        </div>
+    </div>
+</nav>
+
+<div class="container">
+    <h1 class="mt-5">投票完成</h1>
+
+    <p class="lead">
+        <br><br>
+        感谢您参与本次投票！您本次投票的唯一识别码为:<div id="code" style="font-weight: 700"></div>
+    </p>
+    <br>
+<!--    <button class="btn btn-info btn-lg" onclick="location.href = '/public/en'" type="button">Launch a vote (-->
+<!--        In-->
+<!--        language: English )-->
+<!--    </button>-->
+<!--    <button class="btn btn-danger btn-lg" onclick="location.href = '/public/cn'" type="button">分享-->
+<!--    </button>-->
+<!--    <button class="btn btn-default" data-target="#shareQREnd" data-toggle="modal" type="button"><i-->
+<!--            class="fa fa-qrcode"></i> 分享二维码-->
+<!--    </button>-->
+</div>
+
+<br>
+
+<footer class="footer">
+    <div class="container">
+        <br>
+        <span class="text-muted" th:text="'© ️' + ${YEAR}"></span><span>&nbsp;<a>投票</a>
+        <img height="32" src="/static/images/china.png" width="32"/></span>
+    </div>
+</footer>
+
+<script src="/static/jquery/jquery-3.4.1.min.js"></script>
+<script src="/static/bootstrap/js/bootstrap.min.js"></script>
+<script src="/static/bootstrap/js/icheck.min.js"></script>
+
+<!-- Custom JS -->
+<span th:replace="/vote/modal/toVoteID_cn"></span>
+
+<script src="/static/js/vote/toVoteID_cn.js"></script>
+<script>
+    // $(document).ready(function(){
+    //     sessionStorage.clear();
+    // });
+</script>
+</body>
+</html>
