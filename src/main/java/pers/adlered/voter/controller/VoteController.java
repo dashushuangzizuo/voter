@@ -130,6 +130,10 @@ public class VoteController {
                     }
                 }
                 vt.setSelection(sb.toString());
+                int len = vt.getMd5_v().length();
+                if(len>16){
+                    vt.setMd5_v("*"+vt.getMd5_v().substring(len-10,len));
+                }
             }
         }
 
@@ -197,6 +201,30 @@ public class VoteController {
 
         String date = format.format(datenow);
         List<VoteToken> list = voteTokenMapper.getVoteTokenList(VID);
+        if(vote!=null){
+            String selectionSerial = vote.getSelection();
+            //Package and readout
+            List<Map<String, String>> selects = Selection.analyze(selectionSerial);
+            for(VoteToken vt : list){
+                StringBuffer sb = new StringBuffer();
+                String str[] = vt.getSelection().split(",");
+                for (String s : str) {
+                    for(int i = 0;i<selects.size();i++){
+                        if(selects.get(i).get("num").equals(s)){
+                            if(sb.length()>0){
+                                sb.append(",");
+                            }
+                            sb.append(selects.get(i).get("selectionText"));
+                        }
+                    }
+                }
+                vt.setSelection(sb.toString());
+                int len = vt.getMd5_v().length();
+                if(len>16){
+                    vt.setMd5_v("*"+vt.getMd5_v().substring(len-10,len));
+                }
+            }
+        }
         List<VoteToken> tokenList = voteTokenMapper.getVoteTokenAll(VID);
         if(tokenList!=null){
             voteAll = tokenList.size();

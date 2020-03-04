@@ -87,28 +87,17 @@
     <h4 th:text="${Collection}"></h4>
     <br>
     <div class="alert"></div>
-    <div style="margin: 0% 10% 10%">
-        <div>
-            <table class="table table-hove">
-                <caption>投票详情</caption>
-                <thead>
-                <tr>
-                    <th style="text-align: center;">投票人</th>
-                    <th style="text-align: center;">投票选项</th>
-                    <th style="text-align: center;">投票时间</th>
-                </tr>
-                </thead>
-<!--                <tbody id="tbody1">-->
-
-
-<!--                </tbody>-->
-            </table>
+    <div style="margin: 0% 5% 5%">
+        <div class="head1">
+            <div class="col-xs-4" th:text="投票人" style="text-align: center;font-weight: bolder;border-bottom: 1px solid #a9a7a7"></div>
+            <div class="col-xs-4" th:text="投票选项" style="text-align: center;font-weight: bolder;border-bottom: 1px solid #a9a7a7">></div>
+            <div class="col-xs-4" th:text="投票时间" style="text-align: center;font-weight: bolder;border-bottom: 1px solid #a9a7a7"></div>
         </div>
-        <div th:each="entries:${VoteList}">
+        <div class="body1" th:each="entries:${VoteList}">
             <div class="row">
-                <div class="col-xs-4" id="divSelection1" th:text="${entries['md5_v']}" style="align-content: center;"></div>
-                <div class="col-xs-4" id="divSelection2" th:text="${entries['Selection']}" style="align-content: center">></div>
-                <div class="col-xs-2" id="divSelection3" th:text="${entries['VoteDate']}"></div>
+                <div class="col-xs-4" id="divSelection1" th:text="${entries['md5_v']}" style="text-align: center;word-wrap:break-word;" ></div>
+                <div class="col-xs-4" id="divSelection2" th:text="${entries['Selection']}" style="text-align: left;word-wrap:break-word;">></div>
+                <div class="col-xs-4" id="divSelection3" th:text="${entries['VoteDate']}" style="text-align: left;word-wrap:break-word;"></div>
             </div>
         </div>
     </div>
