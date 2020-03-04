@@ -32,7 +32,7 @@ function toVoteID() {
                 //Not exist
                 alert("投票ID 未找到！请检查是否正确。")
             }else if(data == 4){
-                location.href = "/vote/view/" + voteID;
+                location.href = "/vote/view/" + voteID+"/"+token;
             }else if(data == 5){
                 alert("投票活动已过期！")
             }else if(data == 6){

@@ -12,15 +12,17 @@ function eventOnSelect(limit) {
 }
 
 function  submit(choice, VID) {
-    checkToken(choice, VID);
+    var token = $("#token").val();
+    // checkToken(choice, VID);
+    submitVote(choice, VID,token);
 }
 
-function submitVote(choice, VID) {
+function submitVote(choice, VID,Token) {
         if (choice == 1) {
             wait();
             var result = $("input[name='optionsRadios']:checked").attr("id");
             if (result != undefined) {
-                vote(VID, result);
+                vote(VID, result,Token);
             } else {
                 emptySet();
             }
@@ -33,7 +35,7 @@ function submitVote(choice, VID) {
                     checkBoxes.push(obj[i].getAttribute("id"));
             }
             if (checkBoxes.length != 0) {
-                vote(VID, checkBoxes.toString());
+                vote(VID, checkBoxes.toString(),Token);
             } else {
                 emptySet();
             }
@@ -104,13 +106,13 @@ function checkToken(choice, VID) {
     // }, 1000);
 }
 
-function vote(VID, selected) {
+function vote(VID, selected,Token) {
     setTimeout(function () {
         // var token = sessionStorage.getItem("token");
         var params = {};
         params.VID = VID;
         params.selected = selected;
-        params.token = token;
+        params.token = Token;
         $.ajax({
             url: "/submitVote",
             data: params,
@@ -130,9 +132,12 @@ function vote(VID, selected) {
                     //     $("#progress" + value).removeClass("progress-bar-success");
                     //     $("#progress" + value).addClass("progress-bar-info");
                     // });
-                    location.href = "/vote/end";
+                    location.href = "/vote/end/"+data.split(',')[1];
                 } else if (data == 0) {
                     only1Time();
+                } else if (data == 2){
+                    //令牌无效
+                    commitToken(VID);
                 }
             }
         });

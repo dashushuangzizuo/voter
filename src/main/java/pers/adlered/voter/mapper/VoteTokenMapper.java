@@ -39,4 +39,8 @@ public interface VoteTokenMapper {
             " VID = #{vid} AND Token = #{TOKEN} order by  VoteDate desc")
     List<VoteToken> getVoteTokenListByPass( @Param("vid") Integer vid, @Param("TOKEN") String TOKEN);
 
+    @Select("SELECT * FROM Voter_Vote_Token WHERE" +
+            " VID = #{vid} AND md5_v = #{Code} order by  VoteDate desc")
+    List<VoteToken> getVoteTokenListByCode( @Param("vid") Integer vid, @Param("Code") String code);
+
 }

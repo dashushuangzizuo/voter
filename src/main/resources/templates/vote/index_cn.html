@@ -45,11 +45,12 @@
                 <button hidden="hidden" id="submitToken" data-target="#toVoteID" data-toggle="modal" ><i
                         ></i>
                 </button>
+<!--                <li id = 'token' hidden="hidden" value="[[${Token}]]"></li>-->
             </ul>
         </div>
     </div>
 </nav>
-
+<input type="hidden" id="token" th:value="${Token}">
 <div class="container" style="padding: 0 5px 0;">
     <div class="title">
 <!--        <a class="pull-left" href="javascript: void(0);" onclick="switchLang()">English</a>-->

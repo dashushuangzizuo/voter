@@ -30,6 +30,11 @@ public class VoteService {
         return list;
     }
 
+    public List<VoteToken> getVoteTokenByCode(Integer VID,String code){
+        List<VoteToken> list = voteTokenMapper.getVoteTokenListByCode(VID,code);
+        return list;
+    }
+
     public boolean checkDate(Integer VID){
         Date dateStart = null;
         boolean voteSt = false;
@@ -48,7 +53,7 @@ public class VoteService {
     }
 
 
-    public boolean isAdm(Integer VID,String TOKEN){
+    public boolean isAdm(Integer VID,String TOKEN){//管理员
         Vote vote = getVote(VID);
         if(vote.getPass().equals(DigestUtils.md5DigestAsHex((TOKEN+"ccb2020").getBytes()))){
             return true;
@@ -56,8 +61,16 @@ public class VoteService {
         return false;
     }
 
-    public boolean isVoter(Integer VID,String TOKEN){
+    public boolean isVoter(Integer VID,String TOKEN){//投票者
         List<VoteToken> voteTokenList = getVoteToken(VID,TOKEN);
+        if(voteTokenList.size()>0){
+            return true;
+        }
+        return false;
+    }
+
+    public boolean isCode(Integer VID,String TOKEN){// 识别码
+        List<VoteToken> voteTokenList = getVoteTokenByCode(VID,TOKEN);
         if(voteTokenList.size()>0){
             return true;
         }

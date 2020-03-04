@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.DigestUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 import pers.adlered.voter.analyzer.Selection;
@@ -73,6 +74,7 @@ public class VoteController {
         modelAndView.addObject("Describe", vote.getDescribes());
         modelAndView.addObject("Type", vote.getType());
         modelAndView.addObject("Limit", vote.getLimits());
+        modelAndView.addObject("Token",TOKEN);
         //Selection process
         List<Map<String, String>> selects = Selection.analyze(vote.getSelection());
         modelAndView.addObject("Selection", selects);
@@ -95,6 +97,7 @@ public class VoteController {
         String voteStartDate = "";
         Date dateStart = null;
         boolean voteSt = false;
+
         Vote vote = voteMapper.getVote(VID);
         if(vote!=null){
 //            voteStartDate = vote.getVoteDate().toString();
@@ -109,6 +112,27 @@ public class VoteController {
 
         String date = format.format(datenow);
         List<VoteToken> list = voteTokenMapper.getVoteTokenList(VID);
+        if(vote!=null){
+            String selectionSerial = vote.getSelection();
+            //Package and readout
+            List<Map<String, String>> selects = Selection.analyze(selectionSerial);
+            for(VoteToken vt : list){
+                StringBuffer sb = new StringBuffer();
+                String str[] = vt.getSelection().split(",");
+                for (String s : str) {
+                    for(int i = 0;i<selects.size();i++){
+                        if(selects.get(i).get("num").equals(s)){
+                            if(sb.length()>0){
+                                sb.append(",");
+                            }
+                            sb.append(selects.get(i).get("selectionText"));
+                        }
+                    }
+                }
+                vt.setSelection(sb.toString());
+            }
+        }
+
         List<VoteToken> tokenList = voteTokenMapper.getVoteTokenAll(VID);
         if(tokenList!=null){
             voteAll = tokenList.size();
@@ -146,8 +170,12 @@ public class VoteController {
         return modelAndView;
     }
 
-    @RequestMapping("/vote/view/{VID}")
-    public ModelAndView showVoteView(@PathVariable Integer VID) {
+    @RequestMapping("/vote/view/{VID}/{TOKEN}")
+    public ModelAndView showVoteView(@PathVariable Integer VID,@PathVariable String TOKEN) {
+        // todo  口令验证
+        if(!voteService.isCode(VID,TOKEN)){
+            return new ModelAndView("/index");
+        }
         int voteAll = 0;
         int voted = 0;
         int unVote = 0;
@@ -232,12 +260,13 @@ public class VoteController {
         }
     }
 
-    @RequestMapping("/vote/end")
-    public ModelAndView showVoteEnd() {
+    @RequestMapping("/vote/end/{code}")
+    public ModelAndView showVoteEnd(@PathVariable String code) {
 //        VoteToken vt = voteTokenMapper.getVoteToken(token);
         // 根据token  VID selection VoteDate 生成md5_v
         ModelAndView modelAndView = new ModelAndView("/vote/index_end");
         modelAndView.addObject("YEAR", GetDate.year());
+        modelAndView.addObject("Code",code);
 //        modelAndView.addObject("VoteID", vote.getVID());
 //        modelAndView.addObject("Title", vote.getTitle());
 //        modelAndView.addObject("Describe", vote.getDescribe());
@@ -275,38 +304,69 @@ public class VoteController {
     @ResponseBody
     public Integer checkVoteID(Integer voteID,String token) {
         try {
+            if(token == null||token.trim().equals("")){
+                return 3;//口令无效
+            }
             Vote v = voteMapper.getVote(voteID);
-            List<String> vt = voteTokenMapper.queryVoteToken(voteID);
-            List<String> vtView = voteTokenMapper.queryVoteView(voteID);
-            List<VoteToken> vtAll = voteTokenMapper.getVoteTokenAll(voteID);
-            boolean voteStatus = true;
-            boolean status = voteService.checkDate(voteID);
-            for(VoteToken t : vtAll){
-                if(!t.getToken().trim().equals("")){
-                    voteStatus = false;
-                }
+            if(v==null){
+                return 0;//查无此ID
             }
-
-            if(token == null||token.trim() == ""){
-                return 3;
-            }
-            String md5 = DigestUtils.md5DigestAsHex((token+"ccb2020").getBytes());
-            if(v!=null){
-                if(v.getPass().equals(md5)){
-                    return 2;//管理员
-                }
-                if((vtView.contains(token)&&status)||(vtView.contains(token)&&voteStatus)){//投票过期 或 投票完成未过期
-                    return 4;//查看码
-                }
+            if(voteService.isAdm(voteID,token)){//管理员
+                return 2;//管理员
+            }else if(voteService.isVoter(voteID,token)){//投票口令  （是否过期）
+//                List<String> vt = voteTokenMapper.queryVoteToken(voteID);
+                boolean status = voteService.checkDate(voteID);
                 if(status){
                     return 5;//投票过期，无法投票
                 }
-                if(vt.contains(token)){
-                    return 1;//投票人
+                return 1;//投票人
+            }else if(voteService.isCode(voteID,token)){//查看码
+                boolean status = voteService.checkDate(voteID);
+                boolean voteStatus = true;
+                List<VoteToken> vtAll = voteTokenMapper.getVoteTokenAll(voteID);
+                for(VoteToken t : vtAll){
+                    if(!t.getToken().trim().equals("")){
+                        voteStatus = false;
+                    }
                 }
+                if(!status&&!voteStatus){
+                    return 6;//投票未过期且投票未完成
+                }
+                //投票过期 或 投票完成未过期
+                return 4;//查看码
+            }else{
                 return 3;//口令无效
             }
-            return 0;//查无此ID
+
+
+            //
+//            List<String> vt = voteTokenMapper.queryVoteToken(voteID);
+//            List<String> vtView = voteTokenMapper.queryVoteView(voteID);
+//            List<VoteToken> vtAll = voteTokenMapper.getVoteTokenAll(voteID);
+//            boolean voteStatus = true;
+//            boolean status = voteService.checkDate(voteID);
+//            for(VoteToken t : vtAll){
+//                if(!t.getToken().trim().equals("")){
+//                    voteStatus = false;
+//                }
+//            }
+//            String md5 = DigestUtils.md5DigestAsHex((token+"ccb2020").getBytes());
+//            if(vt.contains(token)){
+//                if(status){
+//                    return 5;//投票过期，无法投票
+//                }
+//                return 1;//投票人
+//            }
+//            if(v.getPass().equals(md5)){
+//                return 2;//管理员
+//            }
+//            if((vtView.contains(token)&&status)||(vtView.contains(token)&&voteStatus)){//投票过期 或 投票完成未过期
+//                return 4;//查看码
+//            }
+//            if(!status&&vtView.contains(token)&&!voteStatus){
+//                return 6;//投票未过期且投票未完成
+//            }
+//            return 3;//口令无效
         } catch (Exception e) {
             return -1;
         }
@@ -357,6 +417,12 @@ public class VoteController {
     @RequestMapping("/submitVote")
     @ResponseBody
     public String submitVote(HttpServletRequest request, Integer VID, String selected,String token) {
+        // todo 判断token是否有效
+        List<VoteToken> vt = voteService.getVoteToken(VID,token);
+        if(vt.size()<=0){
+            return "2";
+        }
+
         String ipAddr = IpUtil.getIpAddr(request);
         String ipAndVID = ipAddr + ":" + VID;
         if(selected == null){
