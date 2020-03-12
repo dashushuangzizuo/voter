@@ -14,9 +14,11 @@ import org.springframework.web.servlet.ModelAndView;
 import pers.adlered.voter.analyzer.Selection;
 import pers.adlered.voter.analyzer.Serialize;
 import pers.adlered.voter.dao.Vote;
+import pers.adlered.voter.dao.VoteDetail;
 import pers.adlered.voter.dao.VoteToken;
 import pers.adlered.voter.limit.IpUtil;
 import pers.adlered.voter.limit.LoadingCacheServiceImpl;
+import pers.adlered.voter.mapper.VoteDetailMapper;
 import pers.adlered.voter.mapper.VoteMapper;
 import pers.adlered.voter.mapper.VoteTokenMapper;
 import pers.adlered.voter.service.VoteService;
@@ -39,6 +41,8 @@ public class VoteController {
     VoteMapper voteMapper;
     @Autowired
     VoteTokenMapper voteTokenMapper;
+    @Autowired
+    VoteDetailMapper voteDetailMapper;
     @Resource
     LoadingCacheServiceImpl loadingCacheService;
     @Resource
@@ -287,6 +291,24 @@ public class VoteController {
             return new ArrayList<>();
         }
     }
+    @RequestMapping("/getVoteDetail")
+    @ResponseBody
+    public List<VoteDetail> getVoteDetail(Integer voteID){
+        List<VoteDetail> list = voteDetailMapper.getVoteDetail(voteID);
+        Vote vote = voteMapper.getVote(voteID);
+        String selectionSerial = vote.getSelection();
+        //Package and readout
+        List<Map<String, String>> selects = Selection.analyze(selectionSerial);
+        for(VoteDetail detail : list){
+            String str = detail.getSno().toString();
+                for(int i = 0;i<selects.size();i++){
+                    if(selects.get(i).get("num").equals(str)){
+                        detail.setSname(selects.get(i).get("selectionText"));
+                    }
+                }
+        }
+        return list;
+    }
 
     @RequestMapping("/vote/end/{code}")
     public ModelAndView showVoteEnd(@PathVariable String code) {
@@ -402,7 +424,8 @@ public class VoteController {
 
     @RequestMapping("/voterSubmit")
     @ResponseBody
-    public Integer voterSubmit(String title, String describe, String selection, Integer type, Integer limit,String pass,Integer voternum) {
+    public Integer voterSubmit(String title, String describe, String selection, Integer type, Integer limit,String pass,Integer voternum,HttpServletRequest req) {
+        String[] array = req.getParameterValues("textdesc[]");//选项简介
         //Verify
         if (title == "") {
             return -7426;
@@ -434,6 +457,9 @@ public class VoteController {
                 int code = uuid.hashCode();
                 code = abs(code);
                 voteMapper.insertToken(VID.toString(),CommonUtils.DeciamlToThirtySix(code));
+            }
+            for(int i = 0;i<array.length;i++){
+                voteDetailMapper.insertVoteDetail(VID,array[i],i+1);
             }
             return VID;
         } catch (Exception E) {

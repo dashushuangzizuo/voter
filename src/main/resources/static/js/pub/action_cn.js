@@ -4,11 +4,15 @@ function submitVote() {
         if (checkAll()) {
             //Build serial
             var build = "";
+            var text = [];
             for (var i = 1; i <= options; ++i) {
                 var num = i;
                 var count = 0;
                 var selectionText = $("#option" + i).val();
                 build += "<%" + num + "<%" + count + "<%" + selectionText;
+
+                var desc = $("#text"+i).val();
+                text[i-1]=desc;
             }
             params = {};
             params.title = $("#voteTitle").val();
@@ -18,6 +22,7 @@ function submitVote() {
             params.limit = $("#modeInput").val();
             params.pass = $("#pass").val();
             params.voternum = $("#voternum").val();
+            params.textdesc = text;
             if (mode == 1) {
                 params.limit = -1;
             }
@@ -75,25 +80,30 @@ function addOption() {
         "        <br>\n" +
         "    </div>";
     $(".add").before(append);
-    // append="" +"<li><a href=\"#detail" + options + "\" tt=\"\" data-toggle=\"tab\">选项 " + options +"</a></li>";
-    // $(".nav_add").before(append);
-    // append="" +"       <div class=\"tab-pane\" id=\"detail" + options + "\">" +
-    //            "             <form role=\"form\">" +
-    //             "                   <div class=\"form-group\">" +
-    //
-    //             "                          <label for=\"text" + options +"\">简介" + options + "</label>" +
-    //              "                         <textarea class=\"form-control\" rows=\"30\" id=\"text" + options + "\"></textarea>" +
-    //
-    //              "                 </div>" +
-    //
-    //               "            </form>" +
-    //                "        </div>";
-    //  $(".tab_add").before(append);
+    append="" +"<li><a href=\"#detail" + options + "\" tt=\"\" data-toggle=\"tab\">选项 " + options +"</a></li>";
+    $(".nav_add").before(append);
+    append="" +"       <div class=\"tab-pane\" id=\"detail" + options + "\">" +
+               "             <form role=\"form\">" +
+                "                   <div class=\"form-group\">" +
+
+                "                          <label for=\"text" + options +"\">简介" + options + "</label>" +
+                 "                         <textarea class=\"form-control\" rows=\"5\" id=\"text" + options + "\"></textarea>" +
+
+                 "                 </div>" +
+
+                  "            </form>" +
+                   "        </div>";
+     $(".tab_add").before(append);
+     $("#tabOption > li").siblings().removeClass("active");
+     $("#tabOption > li:last").addClass("active");
+     $("#myTabContent > div.tab-pane").removeClass("active");
+     $("#myTabContent > div.tab-pane:last").addClass("active");
 
 }
 
 function delOption() {
     $(".option" + options).remove();
+    $("#detail" + options ).remove();
     --options;
     $(".option" + options + " .cls").after("" +
         "            <span class=\"input-group-btn\" id=\"close" + options + "\">\n" +
@@ -102,8 +112,11 @@ function delOption() {
         "                </button>\n" +
         "            </span>");
     //
-    //   $("#detail" + options ).remove();
-    //    $("#tabOption li")[options].remove();
+    $("#tabOption > li").siblings().removeClass("active");
+    $("#tabOption > li > a:last").remove();
+    $("#tabOption > li").first().addClass("active");
+    $("#myTabContent > div.tab-pane").removeClass("active");
+    $("#myTabContent > div.tab-pane:first").addClass("active");
 }
 
 function showTabView(){
@@ -118,7 +131,7 @@ $("#modeInput").on("input propertychange", function () {
         if (input <= options) {
             successS();
         } else {
-            errorS();
+            errorS();tab_add
         }
     }
 });

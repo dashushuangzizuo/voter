@@ -13,6 +13,7 @@
     <link href="/static/css/vote/vote.css" rel="stylesheet">
     <link href="/static/fontawesome/css/font-awesome.min.css" rel="stylesheet">
     <link href="/static/css/pub/sticky_footer_navbar.css" rel="stylesheet">
+    <link href="/static/progress/css/component.css" rel="stylesheet" type="text/css"/>
 
     <!-- QR Code -->
     <!-- JQuery -->
@@ -103,8 +104,31 @@
                 </div>
             </div>
         </div>
+
+        <!-- Add tabView -->
+        <ul class="nav nav-tabs" id="tabOption">
+<!--            <li><a href="#detail1" tt="" data-toggle="tab">选项 1</a></li>-->
+<!--            <li><a href="#detail2" tt="" data-toggle="tab">选项 2</a></li>-->
+<!--            <li><a href="#detail3" tt="" data-toggle="tab">选项 3</a></li>-->
+            <div class="nav_add"></div>
+        </ul>
+
+        <div id="myTabContent" class="tab-content">
+<!--            <div class="tab-pane active" id="detail1">-->
+<!--                <form role="form">-->
+<!--                    <div class="form-group">-->
+<!--                        <label for="text1">简介1</label>-->
+<!--                        <textarea class="form-control" rows="5" id="text1"></textarea>-->
+<!--                    </div>-->
+
+<!--                </form>-->
+<!--            </div>-->
+            <div class="tab_add"></div>
+        </div>
+
     </div>
     <br>
+
     <!-- Submit button -->
     <div aria-label="..." class="btn-group" role="group">
         <button class="btn btn-default" id="submitButton" th:onclick="|submit(${Type}, ${VoteID})|" type="button"><i
@@ -144,6 +168,33 @@
     function switchLang() {
         switchLanguage("en", [[${VoteID}]]);
     }
+    $(document).ready(function () {
+        params = {};
+        params.voteID = [[${VoteID}]];
+        $.ajax({
+            url: "/getVoteDetail",
+            data: params,
+            success: function (data) {
+                var append = "";
+                for(var i=0;i<data.length;i++){
+                    append="" +"<li><a href=\"#detail" + i + "\" tt=\"\" data-toggle=\"tab\">" + data[i].sname +"</a></li>";
+                    $(".nav_add").before(append);
+                    append="" +"       <div class=\"tab-pane\" id=\"detail" + i + "\">" +
+                        "             <form role=\"form\">" +
+                        "                   <div class=\"form-group\">" +
+
+                        "                          <label for=\"text" + i +"\">简介" + "</label>" +
+                        "                         <textarea class=\"form-control\" rows=\"5\" id=\"text" + i + "\" disabled='disabled'>"+data[i].detail+"</textarea>" +
+
+                        "                 </div>" +
+
+                        "            </form>" +
+                        "        </div>";
+                    $(".tab_add").before(append);
+                }
+            }
+        });
+    })
 </script>
 </body>
 </html>

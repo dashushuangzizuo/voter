@@ -9,19 +9,22 @@
                 </button>
             </div>
             <div class="modal-body">
-<!--                <form>-->
-<!--                    <div class="form-group">-->
-<!--                        <label class="col-form-label" for="voteID">发起的投票ID</label>-->
-<!--                        <input autofocus class="form-control" id="voteID" type="text" disabled="disabled">-->
-<!--                    </div>-->
-<!--                    <div class="form-group">-->
-<!--                        <label class="col-form-label" for="token">口令</label>-->
-<!--                        <input autofocus class="form-control" id="token" type="text">-->
-<!--                    </div>-->
-<!--                </form>-->
                 <div th:each="entries:${TokenList}">
                     <div class="row">
-                        <div class="col-xs-16" id="divSelection1" th:text="${entries['Token']}" style="text-align: center;"></div>
+                        <div class="col-xs-16" id="divSelection1" th:text="${entries['Token']}" style="text-align: center;">
+                            <ul>
+                                <li><span>1</span><a href="#">CSS盒子模型：CSS盒子模型是什么意</a></li>
+                                <li><span>2</span><a href="#">CSS盒子模型：CSS盒子模型是什么意</a></li>
+                                <li><span>3</span><a href="http://www.zzarea.com/css">CSS盒子模型：CSS盒子模型是什么意</a></li>
+                                <li><span>4</span><a href="#">CSS盒子模型：CSS盒子模型是什么意</a></li>
+                                <li><span>5</span><a href="#">CSS盒子模型：CSS盒子模型是什么意</a></li>
+                                <li><span>6</span><a href="#">CSS盒子模型：CSS盒子模型是什么意</a></li>
+                                <li><span>7</span><a href="#">CSS盒子模型：CSS盒子模型是什么意</a></li>
+                                <li><span>8</span><a href="#">CSS盒子模型：CSS盒子模型是什么意</a></li>
+                                <li><span>9</span><a href="#">CSS盒子模型：CSS盒子模型是什么意</a></li>
+                                <li><span>10</span><a href="#">CSS盒子模型：CSS盒子模型是什么意</a></li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
             </div>
