@@ -5,6 +5,7 @@
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="Voter" />
+          <element id="module-output" name="voter" />
         </element>
         <element id="directory" name="lib">
           <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-thymeleaf:2.1.5.RELEASE" />
@@ -81,7 +82,7 @@
           <element id="library" level="project" name="Maven: com.alibaba:fastjson:1.2.56" />
         </element>
       </element>
-      <element id="javaee-facet-resources" facet="Voter/web/Web" />
+      <element id="javaee-facet-resources" facet="voter/web/Web" />
     </root>
   </artifact>
 </component>
